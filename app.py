@@ -6,21 +6,25 @@ import numpy as np
 from scipy import stats
 from sklearn.ensemble import GradientBoostingRegressor
 
+# Sidebar for selection
 with st.sidebar:
     st.markdown("# CO2 Emission Prediction")
-    user_input = st.selectbox('Please select',('Visulization','Model'))
+    user_input = st.selectbox('Please select', ('Visualization', 'Model'))
 
+# Load data
 df = pd.read_csv('co2 Emissions.csv')
 
-fuel_type_mapping = {"Z": "Premium Gasoline","X": "Regular Gasoline","D": "Diesel","E": "Ethanol(E85)","N": "Natural Gas"}
+# Mapping fuel types
+fuel_type_mapping = {"Z": "Premium Gasoline", "X": "Regular Gasoline", "D": "Diesel", "E": "Ethanol(E85)", "N": "Natural Gas"}
 df["Fuel Type"] = df["Fuel Type"].map(fuel_type_mapping)
 df_natural = df[~df["Fuel Type"].str.contains("Natural Gas")].reset_index(drop=True)
 
+# Selecting relevant features and removing outliers
 df_new = df_natural[['Engine Size(L)', 'Cylinders', 'Fuel Consumption Comb (L/100 km)', 'CO2 Emissions(g/km)']]
 df_new_model = df_new[(np.abs(stats.zscore(df_new)) < 1.9).all(axis=1)]
 
-# Visulization
-if user_input == 'Visulization':
+# Visualization
+if user_input == 'Visualization':
 
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
@@ -31,7 +35,7 @@ if user_input == 'Visulization':
 
     # Brands of Cars
     st.subheader('Brands of Cars')
-    df_brand = df['Make'].value_counts().reset_index().rename(columns={'count':'Count'})
+    df_brand = df['Make'].value_counts().reset_index().rename(columns={'index': 'Make', 'Make': 'Count'})
     plt.figure(figsize=(15, 6))
     fig1 = sns.barplot(data=df_brand, x="Make", y="Count")
     plt.xticks(rotation=75)
@@ -44,7 +48,7 @@ if user_input == 'Visulization':
 
     # Top 25 Models of Cars
     st.subheader('Top 25 Models of Cars')
-    df_model = df['Model'].value_counts().reset_index().rename(columns={'count':'Count'})
+    df_model = df['Model'].value_counts().reset_index().rename(columns={'index': 'Model', 'Model': 'Count'})
     plt.figure(figsize=(20, 6))
     fig2 = sns.barplot(data=df_model[:25], x="Model", y="Count")
     plt.xticks(rotation=75)
@@ -57,7 +61,7 @@ if user_input == 'Visulization':
 
     # Vehicle Class
     st.subheader('Vehicle Class')
-    df_vehicle_class = df['Vehicle Class'].value_counts().reset_index().rename(columns={'count':'Count'})
+    df_vehicle_class = df['Vehicle Class'].value_counts().reset_index().rename(columns={'index': 'Vehicle Class', 'Vehicle Class': 'Count'})
     plt.figure(figsize=(20, 5))
     fig3 = sns.barplot(data=df_vehicle_class, x="Vehicle Class", y="Count")
     plt.xticks(rotation=75)
@@ -70,7 +74,7 @@ if user_input == 'Visulization':
 
     # Engine Sizes of Cars
     st.subheader('Engine Sizes of Cars')
-    df_engine_size = df['Engine Size(L)'].value_counts().reset_index().rename(columns={'count':'Count'})
+    df_engine_size = df['Engine Size(L)'].value_counts().reset_index().rename(columns={'index': 'Engine Size(L)', 'Engine Size(L)': 'Count'})
     plt.figure(figsize=(20, 6))
     fig4 = sns.barplot(data=df_engine_size, x="Engine Size(L)", y="Count")
     plt.xticks(rotation=90)
@@ -83,7 +87,7 @@ if user_input == 'Visulization':
 
     # Cylinders
     st.subheader('Cylinders')
-    df_cylinders = df['Cylinders'].value_counts().reset_index().rename(columns={'count':'Count'})
+    df_cylinders = df['Cylinders'].value_counts().reset_index().rename(columns={'index': 'Cylinders', 'Cylinders': 'Count'})
     plt.figure(figsize=(20, 6))
     fig5 = sns.barplot(data=df_cylinders, x="Cylinders", y="Count")
     plt.xticks(rotation=90)
@@ -95,10 +99,16 @@ if user_input == 'Visulization':
     st.write(df_cylinders)
 
     # Transmission of Cars
-    transmission_mapping = { "A4": "Automatic", "A5": "Automatic", "A6": "Automatic", "A7": "Automatic", "A8": "Automatic", "A9": "Automatic", "A10": "Automatic", "AM5": "Automated Manual", "AM6": "Automated Manual", "AM7": "Automated Manual", "AM8": "Automated Manual", "AM9": "Automated Manual", "AS4": "Automatic with Select Shift", "AS5": "Automatic with Select Shift", "AS6": "Automatic with Select Shift", "AS7": "Automatic with Select Shift", "AS8": "Automatic with Select Shift", "AS9": "Automatic with Select Shift", "AS10": "Automatic with Select Shift", "AV": "Continuously Variable", "AV6": "Continuously Variable", "AV7": "Continuously Variable", "AV8": "Continuously Variable", "AV10": "Continuously Variable", "M5": "Manual", "M6": "Manual", "M7": "Manual"}
+    transmission_mapping = {"A4": "Automatic", "A5": "Automatic", "A6": "Automatic", "A7": "Automatic", "A8": "Automatic", "A9": "Automatic", 
+                            "A10": "Automatic", "AM5": "Automated Manual", "AM6": "Automated Manual", "AM7": "Automated Manual", 
+                            "AM8": "Automated Manual", "AM9": "Automated Manual", "AS4": "Automatic with Select Shift", 
+                            "AS5": "Automatic with Select Shift", "AS6": "Automatic with Select Shift", "AS7": "Automatic with Select Shift", 
+                            "AS8": "Automatic with Select Shift", "AS9": "Automatic with Select Shift", "AS10": "Automatic with Select Shift", 
+                            "AV": "Continuously Variable", "AV6": "Continuously Variable", "AV7": "Continuously Variable", 
+                            "AV8": "Continuously Variable", "AV10": "Continuously Variable", "M5": "Manual", "M6": "Manual", "M7": "Manual"}
     df["Transmission"] = df["Transmission"].map(transmission_mapping)
     st.subheader('Transmission')
-    df_transmission = df['Transmission'].value_counts().reset_index().rename(columns={'count': 'Count'})
+    df_transmission = df['Transmission'].value_counts().reset_index().rename(columns={'index': 'Transmission', 'Transmission': 'Count'})
     fig6 = plt.figure(figsize=(20, 5))
     sns.barplot(data=df_transmission, x="Transmission", y="Count")
     plt.title("All Transmissions")
@@ -110,7 +120,7 @@ if user_input == 'Visulization':
 
     # Fuel Type of Cars
     st.subheader('Fuel Type')
-    df_fuel_type = df['Fuel Type'].value_counts().reset_index().rename(columns={'count': 'Count'})
+    df_fuel_type = df['Fuel Type'].value_counts().reset_index().rename(columns={'index': 'Fuel Type', 'Fuel Type': 'Count'})
     fig7 = plt.figure(figsize=(20, 5))
     sns.barplot(data=df_fuel_type, x="Fuel Type", y="Count")
     plt.title("All Fuel Types")
@@ -122,7 +132,7 @@ if user_input == 'Visulization':
 
     # Removing Natural Gas
     st.subheader('After removing Natural Gas data')
-    df_ftype = df_natural['Fuel Type'].value_counts().reset_index().rename(columns={'count': 'Count'})
+    df_ftype = df_natural['Fuel Type'].value_counts().reset_index().rename(columns={'index': 'Fuel Type', 'Fuel Type': 'Count'})
     fig8 = plt.figure(figsize=(20, 5))
     sns.barplot(data=df_ftype, x="Fuel Type", y="Count")
     plt.title("All Fuel Types")
@@ -166,27 +176,42 @@ if user_input == 'Visulization':
     plot_bar(df_co2_transmission, "Transmission", "CO2 Emissions(g/km)", "CO2 Emission variation with Transmission")
     st.pyplot()
 
-    # CO2 Emissions variation with Fuel Type
-    st.subheader('CO2 Emissions variation with Fuel Type')
-    df_co2_fuel_type = df.groupby(['Fuel Type'])['CO2 Emissions(g/km)'].mean().sort_values().reset_index()
-    plot_bar(df_co2_fuel_type, "Fuel Type", "CO2 Emissions(g/km)", "CO2 Emissions variation with Fuel Type")
+        # CO2 Emission variation with Cylinders
+    st.subheader('CO2 Emission variation with Cylinders')
+    df_co2_cylinders = df.groupby(['Cylinders'])['CO2 Emissions(g/km)'].mean().sort_values().reset_index()
+    plot_bar(df_co2_cylinders, "Cylinders", "CO2 Emissions(g/km)", "CO2 Emission variation with Cylinders")
     st.pyplot()
 
+    # CO2 Emission variation with Fuel Type
+    st.subheader('CO2 Emission variation with Fuel Type')
+    df_co2_fuel_type = df.groupby(['Fuel Type'])['CO2 Emissions(g/km)'].mean().sort_values().reset_index()
+    plot_bar(df_co2_fuel_type, "Fuel Type", "CO2 Emissions(g/km)", "CO2 Emission variation with Fuel Type")
+    st.pyplot()
 
-else:
+    # CO2 Emission variation with Engine Size
+    st.subheader('CO2 Emission variation with Engine Size')
+    df_co2_engine_size = df.groupby(['Engine Size(L)'])['CO2 Emissions(g/km)'].mean().sort_values().reset_index()
+    plot_bar(df_co2_engine_size, "Engine Size(L)", "CO2 Emissions(g/km)", "CO2 Emission variation with Engine Size")
+    st.pyplot()
+
+# Model Prediction
+elif user_input == 'Model':
+    st.title("Predict CO2 Emissions")
+
+    # Input sliders for prediction
+    engine_size = st.slider('Engine Size (L)', min_value=0.0, max_value=10.0, value=3.0, step=0.1)
+    cylinders = st.slider('Cylinders', min_value=2, max_value=16, value=4, step=1)
+    fuel_consumption_comb = st.slider('Fuel Consumption Comb (L/100 km)', min_value=1.0, max_value=35.0, value=8.5, step=0.1)
+
+    # Gradient Boosting Regressor model
     X = df_new_model[['Engine Size(L)', 'Cylinders', 'Fuel Consumption Comb (L/100 km)']]
     y = df_new_model['CO2 Emissions(g/km)']
+    model = GradientBoostingRegressor()
+    model.fit(X, y)
 
-    model = GradientBoostingRegressor().fit(X, y)
+    # Predict the CO2 Emissions
+    input_data = np.array([[engine_size, cylinders, fuel_consumption_comb]])
+    prediction = model.predict(input_data)
+    st.subheader(f'Predicted CO2 Emissions: {prediction[0]:.2f} g/km')
 
-    st.title('CO2 Emission Prediction')
-    st.write('Enter the vehicle specifications to predict CO2 emissions.')
 
-    engine_size = st.number_input('Engine Size(L)', step=0.1, format="%.1f")
-    cylinders = st.number_input('Cylinders', min_value=2, max_value=16, step=1)
-    fuel_consumption = st.number_input('Fuel Consumption Comb (L/100 km)', step=0.1, format="%.1f")
-
-    input_data = [[cylinders, engine_size, fuel_consumption]]
-    predicted_co2 = model.predict(input_data)
-
-    st.write(f'Predicted CO2 Emissions: {predicted_co2[0]:.2f} g/km')
