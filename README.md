@@ -2,6 +2,8 @@
 
 An interactive web application for predicting vehicle CO₂ emissions using a **Gradient Boosting Regressor** model, deployed with Streamlit.
 
+[🚀 Open Live App](https://co2-emission-prediction-and-analysis.streamlit.app/)
+
 ---
 
 ## 📌 Overview
