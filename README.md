@@ -2,8 +2,6 @@
 
 An interactive web application for predicting vehicle CO₂ emissions using a **Gradient Boosting Regressor** model, deployed with Streamlit.
 
-[🚀 Open Live App](https://co2-emission-prediction-and-analysis.streamlit.app/)
-
 ---
 
 ## 📌 Overview
@@ -44,7 +42,7 @@ The best-performing model — Gradient Boosting — was selected after comparing
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/your-username/co2-emission-prediction.git
+git clone https://github.com/Madhanadeva-D/CO2-Emission-Prediction-and-Analysis.git
 cd co2-emission-prediction
 ```
 
@@ -55,7 +53,7 @@ pip install -r requirements.txt
 
 **3. Run the app**
 ```bash
-streamlit run app.py
+python -m streamlit run app.py
 ```
 
 ---
@@ -65,9 +63,6 @@ streamlit run app.py
 | Model              | R² Score |
 |--------------------|----------|
 | Gradient Boosting  | **0.9612** ✅ |
-| Random Forest      | 0.9609   |
-| KNN                | 0.9561   |
-| Linear Regression  | 0.9074   |
 
 **Gradient Boosting settings:** `n_estimators=200`, `learning_rate=0.1`, `max_depth=4`
 
